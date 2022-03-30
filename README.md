@@ -3,11 +3,11 @@ Repo to validate CBS bug
 
 Changelog
 
-CommandControl_pivot.py
+# CommandControl_pivot.py
 
 Line: 194-199 
 
-# This fixes the data['kind'] issue, however this is only a temp fix
+This fixes the data['kind'] issue, however this is only a temp fix
 
             if 'kind' in data:
                 name: str = data['kind'].name
@@ -16,7 +16,8 @@ Line: 194-199
                 name: str = ""
             return name
             
-actions_pivot.py
+# actions_pivot.py
+
 - Added -
 
         elif isinstance(outcome, model.LeakedGuyId):
@@ -29,7 +30,7 @@ actions_pivot.py
                     
                 self.__annotate_edge(reference_node, node_id, EdgeAnnotation.KNOWS)
                 
-model_pivot.py
+# model_pivot.py
 
 - Added LeakedGuyId
 
@@ -37,7 +38,7 @@ VulnerabilityOutcomes = Union[
     LeakedCredentials, LeakedNodesId, PrivilegeEscalation, AdminEscalation,
     SystemEscalation, CustomerData, LateralMove, ExploitFailed, LeakedGuyId]
     
-generate_pivot_network.py
+# generate_pivot_network.py
 
 - Added Known_on_capture neighbors + library
 
@@ -54,7 +55,6 @@ generate_pivot_network.py
                 cost=5.0
             )
 
-generate_pivot_network.py
 protocols = ['HTTP', 'SMB', 'RDP']
 
     edges_labels = defaultdict(set)
@@ -71,8 +71,9 @@ protocols = ['HTTP', 'SMB', 'RDP']
         
             edges_labels[edge].add(protocol)
 
-# Create additional nodes, with no random connections to other nodes except selected targets
-    h1 = nx.fast_gnp_random_graph(15, 
+#Create additional nodes, with no random connections to other nodes except selected targets
+
+            h1 = nx.fast_gnp_random_graph(15, 
                                    0, 
                                    seed     = 1, 
                                    directed = True 
