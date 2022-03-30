@@ -41,12 +41,12 @@ generate_pivot_network.py
 
         if len(knows_neighbors) > 0:
             library['Knows_on_capture'] = m.VulnerabilityInfo(
-                description="Attempt to discover human employee associated with node",
+                description="Attempt to discover further info associated with node",
                 type=m.VulnerabilityType.LOCAL,
                 outcome=m.LeakedGuyId([target_node for target_node in knows_neighbors])
                 ,
                 
-                reward_string="Discovered new entity - Human",
+                reward_string="Discovered new networked node",
                 cost=5.0
             )
             
