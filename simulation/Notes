@@ -1,1 +1,52 @@
 
+CommandControl_pivot.py
+
+Line: 194-199 
+
+# This fixes the data['kind'] issue, however this is only a temp fix
+
+            if 'kind' in data:
+                name: str = data['kind'].name
+            else:
+                
+                name: str = ""
+            return name
+            
+actions_pivot.py
+- Added -
+
+        elif isinstance(outcome, model.LeakedGuyId):
+            for node_id in outcome.nodes:
+                self.__mark_node_as_owned(node_id)
+                
+                if self.__mark_node_as_owned(node_id):
+                    newly_discovered_nodes += 1
+                    newly_discovered_nodes_value += self._environment.get_node(node_id).value
+                    
+                self.__annotate_edge(reference_node, node_id, EdgeAnnotation.KNOWS)
+                
+model_pivot.py
+
+- Added LeakedGuyId
+
+VulnerabilityOutcomes = Union[
+    LeakedCredentials, LeakedNodesId, PrivilegeEscalation, AdminEscalation,
+    SystemEscalation, CustomerData, LateralMove, ExploitFailed, LeakedGuyId]
+    
+generate_pivot_network.py
+
+- Added Known_on_capture neighbors + library
+
+        knows_neighbors = traffic_targets(node_id, 'Knows_on_capture')
+
+        if len(knows_neighbors) > 0:
+            library['Knows_on_capture'] = m.VulnerabilityInfo(
+                description="Attempt to discover human employee associated with node",
+                type=m.VulnerabilityType.LOCAL,
+                outcome=m.LeakedGuyId([target_node for target_node in knows_neighbors])
+                ,
+                
+                reward_string="Discovered new entity - Human",
+                cost=5.0
+            )
+            
