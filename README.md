@@ -53,3 +53,58 @@ generate_pivot_network.py
                 reward_string="Discovered new networked node",
                 cost=5.0
             )
+
+generate_pivot_network.py
+protocols = ['HTTP', 'SMB', 'RDP']
+
+    edges_labels = defaultdict(set)
+
+    for protocol in protocols:
+    # Create one graph for each protocol as per nx.stochastic_block_model
+    
+        h = nx.fast_gnp_random_graph(15, 
+                                     0.5, 
+                                     seed     = None, 
+                                     directed = True
+                                     )
+        for edge in h.edges:
+        
+            edges_labels[edge].add(protocol)
+
+# Create additional nodes, with no random connections to other nodes except selected targets
+    h1 = nx.fast_gnp_random_graph(15, 
+                                   0, 
+                                   seed     = 1, 
+                                   directed = True 
+                                   )
+    i          : int = 0
+    num_players: int = 3
+    
+    node_list = random.sample(h1.nodes, num_players)
+    
+    for comp_Nodes in node_list:
+        
+        next_node: int = 15 + i
+        last_node: int = 15 + len(node_list) + i
+            
+        h1.add_node( next_node )
+        h1.add_node( last_node )
+        
+        # Add pivot
+        h1.add_edge(comp_Nodes, next_node)
+        edges_labels[(comp_Nodes, next_node)].add('Knows_on_capture')
+   
+        h1.add_edge(next_node, last_node)
+        edges_labels[(next_node, last_node)].add('Bad')
+
+        
+        i += 1 
+
+    traffic = nx.DiGraph()
+
+    for (u, v), port in list(edges_labels.items()):
+    
+        traffic.add_edge(u, 
+                         v, 
+                         protocol = port)  
+ 
